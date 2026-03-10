@@ -11,4 +11,3 @@ engine = create_engine(URL, echo=True)
 
 class Base(DeclarativeBase):
     pass
-

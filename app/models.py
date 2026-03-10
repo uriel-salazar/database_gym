@@ -38,4 +38,3 @@ class Membership(Base):
     
 Base.metadata.create_all(engine)
 Session=sessionmaker(bind=engine)
-session_local=Session()
