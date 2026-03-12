@@ -7,6 +7,10 @@ app=FastAPI()
 async def welcome():
     return {"message":"Hello Word"}
 
+@app.post("/create")
+async def create_user():
+    pass
+
 
 
 if __name__ == "__main__":
