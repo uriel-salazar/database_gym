@@ -1,13 +1,15 @@
 from pydantic import BaseModel
 
 
-class Create_user(BaseModel):
+class User_create(BaseModel):
       name:str
       age:int
-      status:bool
 
-class Response_user(BaseModel):
-    user_id:int
+class User_response(BaseModel):
+    id:int
+    name:str
+    age:int
+    
     class Config:
         from_attributes=True
 

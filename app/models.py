@@ -27,7 +27,6 @@ class Membership(Base):
     __tablename__='membership'
     id:Mapped[int]=mapped_column(primary_key=True)
     
-    # we will use user_id  as the foreign key from the user's table.
 
     name:Mapped[template_name]
     start_date:Mapped[datetime]=mapped_column(DateTime,nullable=True)
@@ -35,6 +34,12 @@ class Membership(Base):
     user_id:Mapped[int]=mapped_column(ForeignKey('user.user_id'))
     users:Mapped['User']=relationship('user', back_populates='memberships')
     
-    
-Base.metadata.create_all(engine)
+
 Session=sessionmaker(bind=engine)
+
+def get_db():
+    db = Session()
+    try:
+        yield db
+    finally:
+        db.close()
