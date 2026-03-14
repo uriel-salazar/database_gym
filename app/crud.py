@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from models import User
-from schemas import User_create,User_response
+from schemas import User_Create,User_Response
 
 def get_user(db:Session,user_id=User.user_id):
     """ Gets an specific user by the user_id 
@@ -16,7 +16,7 @@ def get_user(db:Session,user_id=User.user_id):
     return db.query(User).filter(User.user_id == user_id).first()
 
 
-def create_user(db: Session,User_create):
+def create_user(db: Session,User_Create):
     """ Creates a new user in the database with a  CRUD function. 
 
     Args:
@@ -26,14 +26,14 @@ def create_user(db: Session,User_create):
     Returns:
         User: created and committed ORM object
     """
-    db_user = User(name=User_create.name, age=User_create.age)
+    db_user = User(name=User_Create.name, age=User_Create.age)
     db.add(db_user) 
     db.commit() 
     db.refresh(db_user)
     return db_user 
 
 def delete_user(db:Session,user_id=User.user_id):
-    user=db.query(User_response).filter(User.user_id==user_id).first()
+    user=db.query(User_Response).filter(User.user_id==user_id).first()
     if user:
         db.delete(user)
         db.commit()
