@@ -15,6 +15,11 @@ def get_user(db:Session,user_id=User.user_id):
     """
     return db.query(User).filter(User.user_id == user_id).first()
 
+def get_users(db:Session,skip:int = 0, limit: int =10):
+    """ We make a query to return a subset of user.
+        The user can decide how many items are returned and 
+        the returning results with "skip" """
+    return db.query(User_Response).offset(skip).limit(limit).all()
 
 def create_user(db: Session,User_Create):
     """ Creates a new user in the database with a  CRUD function. 
