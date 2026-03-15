@@ -4,7 +4,7 @@ import uvicorn
 from sqlalchemy.orm import Session
 from fastapi import HTTPException,Depends
 from models import get_db,User
-from crud import create_user
+from crud import create_user,get_users
 from schemas import User_Create,User_Response
 from database import Base,engine
 
@@ -22,11 +22,13 @@ async def welcome():
     </html>"""
 
 @app.get("/users",response_model=User_Response)
-async def read_users():
-    pass
+async def read_users(skip: int= 0, limit :int = 10 , db:Session = Depends(get_db)):
+    return get_users(db ,skip=skip,limit=limit)
+    
+
 
 @app.get("/user/{user_id}",response_model=User_Response)
-async def get_user(user_id:int,db:Session=Depends(get_db)):
+async def read_user(user_id:int,db:Session=Depends(get_db)):
       user=db.query(User).filter(User.user_id==user_id).first()
       if not user:
           HTTPException(status_code=404,detail="User not found :( ")
