@@ -38,7 +38,11 @@ async def read_user(user_id:int,db: Session = Depends(get_db)):
 
 @app.post("/users",response_model=User_Response)
 async def create(user_create:User_Create,db:Session=Depends(get_db)):
+    
+    if user_create.age  <=  11:
+        raise HTTPException(status_code=403,detail="You're too young")
     return crud.create_user(db,user_create)
+
 
 @app.put("/users/{user_id}",response_model=User_Response)
 async def update_user(user_id:int, user_update:User_Create,db: Session = Depends(get_db)):    
