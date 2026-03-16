@@ -39,12 +39,6 @@ def create_user(db: Session,User_Create):
     db.refresh(db_user)
     return db_user 
 
-def delete_user(db:Session,user_id=User.user_id):
-    user=db.query(User_Response).filter(User.user_id==user_id).first()
-    if user:
-        db.delete(user)
-        db.commit()
-    return user
 
 def update_user(db: Session, user_id:int, user:User_Create):
     db_user = db.query(User).filter(User.user_id == user_id).first()
@@ -58,4 +52,25 @@ def update_user(db: Session, user_id:int, user:User_Create):
         
     return db_user
 
-        
+def delete_user(db:Session,user_id:int,user:User_Create):
+    """ Deletes an user by their id, if the user_id doesn't exists,
+        it returns None.
+        Otherwhise, it will return the query. 
+
+    Args:
+        db (Session): Database session 
+        user_id (int): user_id from the database 
+        user (User_Create): Response Model 
+
+    Returns:
+        db_user : uery that executes the delete of the user. 
+    """
+    db_user= db.query(User).filter(User.user_id==user_id).first()
+    
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+        return db_user
+    
+    else:
+        return None
