@@ -32,6 +32,8 @@ def create_user(db: Session,User_Create):
         User: created and committed ORM object
     """
     db_user = User(name=User_Create.name, age=User_Create.age)
+    if db_user.age <=11:
+        return None
     db.add(db_user) 
     db.commit() 
     db.refresh(db_user)
@@ -43,3 +45,17 @@ def delete_user(db:Session,user_id=User.user_id):
         db.delete(user)
         db.commit()
     return user
+
+def update_user(db: Session, user_id:int, user:User_Create):
+    db_user = db.query(User).filter(User.user_id == user_id).first()
+    if db_user is None:
+        return None
+    
+    db_user.name = user.name
+    db_user.age = user.age
+    db.commit()
+    db.refresh(db_user)
+        
+    return db_user
+
+        
