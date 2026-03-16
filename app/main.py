@@ -21,7 +21,7 @@ async def welcome():
         </body>
     </html>"""
 
-@app.get("/users",response_model=User_Response)
+@app.get("/users",response_model = list[User_Response]) 
 async def read_users(skip: int= 0, limit :int = 10 , db:Session = Depends(get_db)):
     return get_users(db ,skip=skip,limit=limit)
     
