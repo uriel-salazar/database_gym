@@ -34,10 +34,12 @@ def create_user(db: Session,User_Create):
     db_user = User(name=User_Create.name, age=User_Create.age)
     if db_user.age <=11:
         return None
-    db.add(db_user) 
-    db.commit() 
-    db.refresh(db_user)
-    return db_user 
+    
+    elif db:
+        db.add(db_user) 
+        db.commit() 
+        db.refresh(db_user)
+        return db_user 
 
 
 def update_user(db: Session, user_id:int, user:User_Create):
@@ -52,7 +54,7 @@ def update_user(db: Session, user_id:int, user:User_Create):
         
     return db_user
 
-def delete_user(db:Session,user_id:int,user:User_Create):
+def delete_user(db:Session,user_id:int):
     """ Deletes an user by their id, if the user_id doesn't exists,
         it returns None.
         Otherwhise, it will return the query. 

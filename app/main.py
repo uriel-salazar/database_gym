@@ -30,32 +30,35 @@ async def read_users(skip: int= 0, limit :int = 10,
 
 @app.get("/user/{user_id}",response_model=User_Response)
 async def read_user(user_id:int,db: Session = Depends(get_db)):
-      user=db.query(User).filter(User.user_id==user_id).first()
+      user = db.query(User).filter(User.user_id==user_id).first()
       if not user:
           raise HTTPException(status_code=404,detail="User not found :( ")
       return user
   
 
-@app.post("/users",response_model=User_Response)
+@app.post("/users",response_model=User_Response,status_code=201)
 async def create(user_create:User_Create,db:Session=Depends(get_db)):
-    
     if user_create.age  <=  11:
         raise HTTPException(status_code=403,detail="You're too young")
+    
     return crud.create_user(db,user_create)
 
 
 @app.put("/users/{user_id}",response_model=User_Response)
 async def update_user(user_id:int, user_update:User_Create,db: Session = Depends(get_db)):    
-    update= crud.update_user(db,user_id,user_update)
+    update = crud.update_user(db,user_id,user_update)
     if update is None:
         raise HTTPException(status_code=404,detail='User not found')
     
     return update
-@app.delete("/users/{users_id}",response_model=User_Response)
-async def delete_user(user_id:int,user_delete:User_Response,
-        db:Session=Depends(get_db)):
-    delete=
 
+
+@app.delete("/users/{users_id}",response_model=User_Response,status_code=204)
+async def delete_user(user_id :int, db:Session = Depends(get_db)):
+    delete = crud.delete_user(db,user_id)
+    if delete is None:
+        raise HTTPException(status_code=404,detail='User not found')
+    return delete
     
     
 if __name__ == "__main__":
