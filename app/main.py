@@ -1,6 +1,6 @@
 
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse,PlainTextResponse
 import uvicorn
 from sqlalchemy.orm import Session
 from fastapi import HTTPException,Depends
@@ -62,12 +62,26 @@ async def update_user(user_id:int, user_update:User_Create,db: Session = Depends
     return update
 
 
-@app.delete("/users/{users_id}",response_model=User_Response,status_code=200)
+@app.delete("/users/{users_id}",response_class=PlainTextResponse,status_code=200)
 async def delete_user(user_id :int, db:Session = Depends(get_db)):
+    """ Deletes user, if the query it's succesful; it will return a text.
+        Otherwhise, if the user_id is invalid, an exception is flared. 
+
+    Args:
+        user_id (int): User_id 
+        db (Session, optional): Database session 
+
+    Raises:
+        HTTPException: An HTTP exception 
+
+    Returns:
+        str: String of succesful deletion.
+    """
     delete = crud.delete_user(db,user_id)
     if delete is None:
         raise HTTPException(status_code=404,detail='User not found')
-    return delete
+    
+    return f'User deleted succesfully!'
     
     
 if __name__ == "__main__":

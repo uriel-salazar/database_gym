@@ -11,6 +11,8 @@ class User_Create(BaseModel):
       age:int =Field(..., gt=11,
       description="User must be older than 11")
       email:str
+
+
       
 class User_Response(BaseModel):
       """ Returned information 
@@ -23,7 +25,7 @@ class User_Response(BaseModel):
       name:str
       age:int
       email:str
-  
+
       class ConfigDict:
          from_attributes=True
 
