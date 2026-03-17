@@ -38,9 +38,9 @@ async def read_user(user_id:int,db: Session = Depends(get_db)):
 
 @app.post("/users",response_model=User_Response,status_code=201)
 async def create(user_create:User_Create,db:Session=Depends(get_db)):
-    if user_create.age  <= 11:
-        raise HTTPException(status_code=403,detail="You're too young")
     
+    if user_create is None:
+        raise HTTPException(status_code=400, detail="Expected request body but none was provided")
     return crud.create_user(db,user_create)
 
 
@@ -49,8 +49,7 @@ async def update_user(user_id:int, user_update:User_Create,db: Session = Depends
     update = crud.update_user(db,user_id,user_update)
     if update is None:
         raise HTTPException(status_code=404,detail='User not found')
-    if  update.age <=11:
-       raise HTTPException(status_code=403,detail="You're too young")
+    
     return update
 
 

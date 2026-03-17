@@ -4,7 +4,7 @@ from typing_extensions import Annotated
 from database import Base,engine
 from datetime import datetime
 
-template_name=Annotated[str,mapped_column(String(60),nullable=True)]
+name_blueprint = Annotated[str,mapped_column(String(60),nullable=False)]
 
 class User(Base):
     """_summary_
@@ -15,8 +15,8 @@ class User(Base):
     __tablename__='user'
     
     user_id:Mapped[int]=mapped_column(primary_key=True) 
-    name:Mapped[template_name]
-    age:Mapped[int]= mapped_column(nullable=True)
+    name:Mapped[name_blueprint]
+    age:Mapped[int]= mapped_column(nullable=False)
     status:Mapped[bool]= mapped_column(nullable=True)
     
     memberships:Mapped[list['Membership']]=relationship('Membership',back_populates='user')
@@ -27,8 +27,8 @@ class Membership(Base):
     __tablename__='membership'
     id:Mapped[int]=mapped_column(primary_key=True)
     
-    name:Mapped[template_name]
-    start_date:Mapped[datetime]=mapped_column(DateTime,nullable=True)
+    name:Mapped[name_blueprint]
+    start_date:Mapped[datetime]=mapped_column(DateTime,nullable=False)
     user_id:Mapped[int]=mapped_column(ForeignKey('user.user_id'))
     
     user:Mapped['User']=relationship('User', back_populates='memberships')
