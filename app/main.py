@@ -41,8 +41,11 @@ async def read_user(user_id:int,db: Session = Depends(get_db)):
 
 @app.post("/users",response_model=User_Response,status_code=201)
 async def create(user_create:User_Create,db:Session=Depends(get_db)):
-    
-    if user_create is None:
+    exist_email=db.query(User).filter(User.email==User.email).first()
+    if exist_email:
+        raise HTTPException(status_code=400,detail='Email already exists')
+        
+    elif user_create is None:
         raise HTTPException(status_code=400, detail="Expected request body but none was provided")
     return crud.create_user(db,user_create)
 
@@ -50,6 +53,9 @@ async def create(user_create:User_Create,db:Session=Depends(get_db)):
 @app.put("/users/{user_id}",response_model=User_Response)
 async def update_user(user_id:int, user_update:User_Create,db: Session = Depends(get_db)):    
     update = crud.update_user(db,user_id,user_update)
+    exist_email=db.query(User).filter(User.email==User.email).first()
+    if exist_email:
+        raise HTTPException(status_code=400,detail='Email already exists')
     if update is None:
         raise HTTPException(status_code=404,detail='User not found')
     
