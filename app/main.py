@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 import uvicorn
@@ -15,6 +16,7 @@ Base.metadata.create_all(bind=engine)
 
 @app.get("/",response_class=HTMLResponse)
 async def welcome():
+
     return """<html>
         <body>
             <h1> Welcomee ! </h1>
@@ -23,6 +25,7 @@ async def welcome():
 
 @app.get("/users",response_model = list[User_Response]) 
 async def read_users(skip: int= 0, limit :int = 10,
+    
     db:Session = Depends(get_db)):
     return crud.get_users(db ,skip=skip,limit=limit)
     

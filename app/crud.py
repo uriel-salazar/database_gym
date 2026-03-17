@@ -31,7 +31,7 @@ def create_user(db: Session,User_Create):
     Returns:
         User: created and committed ORM object
     """
-    db_user = User(name=User_Create.name, age=User_Create.age)
+    db_user = User(name=User_Create.name, age=User_Create.age,email=User_Create.email)
     if db_user.age <=11:
         return None
     
@@ -49,6 +49,7 @@ def update_user(db: Session, user_id:int, user:User_Create):
     
     db_user.name = user.name
     db_user.age = user.age
+    db_user.email= user.email
     db.commit()
     db.refresh(db_user)
         
