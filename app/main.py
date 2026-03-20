@@ -4,9 +4,9 @@ from fastapi.responses import HTMLResponse,PlainTextResponse
 import uvicorn
 from sqlalchemy.orm import Session
 from fastapi import HTTPException,Depends
-from models import get_db,User
+from models import get_db,User,Membership
 import crud
-#from crud import create_user,get_users,update_user
+
 from schemas import User_Create,User_Response
 from database import Base,engine
 
